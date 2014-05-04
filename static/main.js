@@ -303,7 +303,7 @@ function setLevel(name) {
 var selpar = getHashParam('sel');
 
 var levpar = getHashParam('level');
-setLevel(levpar ? levpar : 'muni');
+setLevel((levpar && levpar in levels) ? levpar : 'muni');
 
 if (selpar) {
     levels[curLevel].once('load', function() {
