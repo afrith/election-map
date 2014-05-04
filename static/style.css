@@ -1,0 +1,27 @@
+html, body, { margin: 0; padding: 0; width: 100%; height: 100%; }
+* { font-family: Helvetica,Arial,sans,sans-serif; }
+
+#bar, #map { margin: 0; position: fixed; top: 0; bottom: 0; }
+#bar { padding: 10px; left:0; width: 300px; }
+#barinner { position: relative; width: 100%; height: 100%; }
+#map { padding: 0; left: 320px; right: 0; }
+#placeinfo { position: absolute; width: 100%; top: 200px; bottom: 150px; overflow-y: auto; }
+#legend { position: absolute; width: 100%; bottom: 0; }
+
+#hint { font-style: italic; font-size: 85%; }
+#placename { font-size: 130%; font-weight: bold; text-transform: uppercase; }
+
+#vvalid, #vspoilt, #vtotal { text-align: right; }
+
+table.voteinfo { font-size: 85%; }
+table.voteinfo th { text-align: left; font-weight: bold; }
+table.voteinfo .vnum, table.voteinfo .vperc { text-align: right; }
+
+table.voteinfo td { padding-left: 10px; }
+table.voteinfo tr td:first-child { padding-left: 0; }
+abbr { border-bottom: 1px dotted; }
+
+#legend table { font-size: 80%; width: 100%; }
+#legend table td.legcel { padding-left: 5px; }
+
+.leaflet-control-permalink { display: none; }

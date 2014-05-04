@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html><head>
+<title>2009 Election Results Map</title>
+
+<link rel="stylesheet" href="leaflet.css" />
+<link rel="stylesheet" href="style.css" />
+
+<script src="jquery-1.10.2.min.js"></script>
+<script src="jquery.number.js"></script>
+<script src="d3.v3.min.js"></script>
+<script src="leaflet.js"></script>
+<script src="TileLayer.GeoJSON.js"></script>
+<script src="Permalink.js"></script>
+
+</head>
+<body>
+
+<div id="bar"><div id="barinner">
+
+<div id="details">
+<b>Level of detail:</b><br />
+<input type="radio" name="level" value="prov" onchange="switchLevel()">Province</input><br />
+<input type="radio" name="level" value="dist" onchange="switchLevel()">District municipality</input><br />
+<input type="radio" name="level" value="muni" onchange="switchLevel()">Local municipality</input><br />
+<input type="radio" name="level" value="ward" onchange="switchLevel()">Ward</input><br />
+<input type="radio" name="level" value="vd" onchange="switchLevel()">Voting district</input>
+<hr />
+</div>
+
+<div id="placeinfo" style="display:none">
+<span id="placename"></span>
+
+<table class="votesum">
+<tr><td>Valid votes:</td><td id="vvalid"></td></tr>
+<tr><td>Spoilt votes:</td><td id="vspoilt"></td></tr>
+<tr><td>Total votes:</td><td id="vtotal"></td></tr>
+</table>
+
+<table class="voteinfo">
+<thead><tr>
+<th>Party</th>
+<th class="vnum">Votes</th>
+<th class="vperc">%</th>
+</tr></thead>
+<tbody></tbody>
+</table>
+</div>
+
+<div id="legend">
+<hr />
+<table>
+<tr>
+<td></td>
+<td class="leghead">&lt;50%</td>
+<td class="leghead">&lt;60%</td>
+<td class="leghead">&lt;70%</td>
+<td class="leghead">&lt;80%</td>
+<td class="leghead">&lt;90%</td>
+<td class="leghead">&gt;90%</td>
+
+<tr>
+<td>ANC</td>
+<td class="legcel" style="background-color: rgba(199,233,192,0.5)"></td>
+<td class="legcel" style="background-color: rgba(161,217,155,0.5)"></td>
+<td class="legcel" style="background-color: rgba(116,196,118,0.5)"></td>
+<td class="legcel" style="background-color: rgba(65,171,93,0.5)"></td>
+<td class="legcel" style="background-color: rgba(35,139,69,0.5)"></td>
+<td class="legcel" style="background-color: rgba(0,90,50,0.5)"></td>
+</tr>
+
+<tr>
+<td>DA</td>
+<td class="legcel" style="background-color: rgba(198,219,239,0.5)"></td>
+<td class="legcel" style="background-color: rgba(158,202,225,0.5)"></td>
+<td class="legcel" style="background-color: rgba(107,174,214,0.5)"></td>
+<td class="legcel" style="background-color: rgba(66,146,198,0.5)"></td>
+<td class="legcel" style="background-color: rgba(33,113,181,0.5)"></td>
+<td class="legcel" style="background-color: rgba(8,69,148,0.5)"></td>
+</tr>
+
+<tr>
+<td>IFP</td>
+<td class="legcel" style="background-color: rgba(252,187,161,0.5)"></td>
+<td class="legcel" style="background-color: rgba(252,146,114,0.5)"></td>
+<td class="legcel" style="background-color: rgba(251,106,74,0.5)"></td>
+<td class="legcel" style="background-color: rgba(239,59,44,0.5)"></td>
+<td class="legcel" style="background-color: rgba(203,24,29,0.5)"></td>
+<td class="legcel" style="background-color: rgba(153,0,13,0.5)"></td>
+</tr>
+
+<tr>
+<td>Other</td>
+<td class="legcel" style="background-color: rgba(217,217,217,0.5)"></td>
+<td class="legcel" style="background-color: rgba(189,189,189,0.5)"></td>
+<td class="legcel" style="background-color: rgba(150,150,150,0.5)"></td>
+<td class="legcel" style="background-color: rgba(115,115,115,0.5)"></td>
+<td class="legcel" style="background-color: rgba(82,82,82,0.5)"></td>
+<td class="legcel" style="background-color: rgba(37,37,37,0.5)"></td>
+</tr>
+
+</table>
+</div>
+
+</div></div>
+
+<div id="map"></div>
+
+<script src="main.js"></script>
+</body></html>
