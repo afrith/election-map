@@ -3,48 +3,10 @@ $('#placeinfo').css('bottom', ($('#legend').height() + 10) + 'px');
 
 var tileroot = "http://localhost:8080/";
 
+/*
 var partynames = {
-    NA : 'National Alliance',
-    CAPE : 'Cape Party',
-    MDP : 'Movement Democratic Party',
-    AIC : 'African Independent Congress',
-    'VF+' : 'Vryheidsfront Plus',
-    APC : "African People's Convention",
-    AMP : 'Africa Muslim Party',
-    COPE : 'Congress of the People',
-    CDA : 'Christian Democratic Alliance',
-    UP : 'Universal Party',
-    AP : 'A Party',
-    AFD : 'Alliance of Free Democrats',
-    SPP : 'Sindawonye Progressive Party',
-    UDM : 'United Democratic Movement',
-    PAM : 'Pan Africanist Movement',
-    BCP : 'Black Consciousness Party',
-    DA : 'Democratic Alliance',
-    UCDP : 'United Christian Democratic Party',
-    XP : 'Ximoko Party',
-    ACDP : 'African Christian Democratic Party',
-    KISS : 'Keep It Straight and Simple',
-    WF : 'Women Forward',
-    AZAPO : "Azanian People's Organisation",
-    ID : 'Independent Democrats',
-    CP : 'Christian Party',
-    ANC : 'African National Congress',
-    ACA : 'African Christian Alliance',
-    UIF : 'United Independent Front',
-    NADECO : 'National Democratic Convention',
-    DPSA : 'Dikwankwetla Party of South Africa',
-    AJ : 'Al Jama-ah',
-    SADECO : 'South African Democratic Congress',
-    SAPP : 'South African Political Party',
-    IFP : 'Inkatha Freedom Party',
-    NVP : 'New Vision Party',
-    PAC : 'Pan Africanist Congress of Azania',
-    GKSA : 'Great Kongress of South Africa',
-    NPSA : 'National Party South Africa',
-    MF : 'Minority Front',
-    PJC : 'Peace and Justice Congress'
 }
+*/
 
 var afmt1 = d3.format(",.0f");
 var afmt2 = d3.format(",.1f");
@@ -113,6 +75,7 @@ L.control.layers({
     "Photo" : aerial
 }).addTo(map);
 
+/*
 parties = ['ACDP','ANC','APC','AJ','AFD','AP','AZAPO','CDA','COPE','DA','GKSA','ID','IFP','KISS','MF','MDP','NADECO','NVP','PAC','PAM','SADECO','UCDP','UDM','UIF','VF+','WF'];
 
 colours = {};
@@ -134,6 +97,7 @@ function partycol(vstr) {
     var propn = vmax/sum;
     return colours[widx in colours ? widx : 99][propn <= 0.5 ? 0 : Math.ceil(propn*10)-5];
 }
+*/
 
 function style(feature) {
     var d = {
@@ -141,8 +105,12 @@ function style(feature) {
         opacity: 1,
         lineJoin: "round",
         fill: true,
+        /*
         fillColor: partycol(feature.properties.v),
         fillOpacity: 0.5
+        */
+        fillColor: "white",
+        fillOpacity: 0
     };
     var c = feature.properties.c;
     if (c == selcode) {
@@ -179,14 +147,17 @@ var oef = function (feature, layer) {
         layer.bringToFront();
         levels[curLevel].geojsonLayer.setStyle(style);
         $("#placename").text(p.n);
+        /*
         do_table(feature);
         $("#vvalid").text(afmt1(p.sum));
         $("#vspoilt").text(afmt1(p.s));
         $("#vtotal").text(afmt1(p.sum + p.s));
+        */
         $("#placeinfo").css("display", "block");
     });
 }
 
+/*
 function do_table(feature)
 {
     var p = feature.properties;
@@ -213,6 +184,7 @@ function do_table(feature)
     sel.exit().remove();
     sel.sort(function(a, b) { return d3.descending(a[1], b[1]); });
 }
+*/
 
 function clearsel() {
     sellayer = null;
