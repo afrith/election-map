@@ -273,6 +273,25 @@ for (var i = 0, l = levelNames.length; i < l; i++) {
     });
 }
 
+var curBallot;
+function switchBallot() {
+    var newBallot = $('input[name="ballot"]:checked').val();
+
+    if (newBallot != curBallot) {
+        //TODO: code to change styles and tables goes here
+        setHashParam('ballot', newBallot);
+        curBallot = newBallot;
+    }
+}
+
+function setBallot(name) {
+    $('input[name="ballot"][value="' + name + '"]')[0].checked = true;
+    switchBallot();
+}
+
+var balpar = getHashParam('ballot');
+setBallot((balpar && (balpar == 'nat' || balpar == 'prov')) ? balpar : 'nat');
+
 var curLevel;
 function switchLevel() {
     var newLevel = $('input[name="level"]:checked').val();
@@ -287,7 +306,7 @@ function switchLevel() {
 }
 
 function setLevel(name) {
-    $('input[value="' + name + '"]')[0].checked = true;
+    $('input[name="level"][value="' + name + '"]')[0].checked = true;
     switchLevel();
 }
 

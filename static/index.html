@@ -24,13 +24,17 @@
 
 <div id="bar"><div id="barinner">
 
-<div id="details">
-<b>Level of detail:</b><br />
+<div id="details"
+
+<p><b>Ballot:</b>&nbsp;
+<input type="radio" name="ballot" value="nat" onchange="switchBallot()">National</input>&nbsp;
+<input type="radio" name="ballot" value="prov" onchange="switchBallot()">Provincial</input></p>
+<p><b>Level of detail:</b><br />
 <input type="radio" name="level" value="prov" onchange="switchLevel()">Provinces</input><br />
 <input type="radio" name="level" value="dist" onchange="switchLevel()">District municipalities</input><br />
 <input type="radio" name="level" value="muni" onchange="switchLevel()">Local municipalities</input><br />
 <input type="radio" name="level" value="ward" onchange="switchLevel()">Wards</input><br />
-<input type="radio" name="level" value="vd" onchange="switchLevel()">Voting districts</input>
+<input type="radio" name="level" value="vd" onchange="switchLevel()">Voting districts</input></p>
 <div class="hint">Click on an area on the map to see full results from that area.</div>
 <hr />
 </div>
