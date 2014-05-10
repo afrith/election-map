@@ -3,10 +3,37 @@ $('#placeinfo').css('bottom', ($('#legend').height() + 10) + 'px');
 
 var tileroot = "http://localhost:8080/";
 
-/*
 var partynames = {
-}
-*/
+    "ACDP": "African Christian Democratic Party",
+    "AIC": "African Independent Congress",
+    "ANC": "African National Congress",
+    "APC": "African People's Convention",
+    "AGANG": "Agang South Africa",
+    "AJ": "Al Jama-ah",
+    "AZAPO": "Azanian People's Organisation",
+    "BRA": "Bushbuckridge Residents Association",
+    "COPE": "Congress of the People",
+    "DA": "Democratic Alliance",
+    "EFF": "Economic Freedom Fighters",
+    "FINLA": "First Nation Liberation Alliance",
+    "FN": "Front National",
+    "ICOSA": "Independent Civic Organisation of South Africa",
+    "IFP": "Inkatha Freedom Party",
+    "KISS": "Keep It Straight and Simple",
+    "KGM": "Kingdom Governance Movement",
+    "MF": "Minority Front",
+    "NFP": "National Freedom Party",
+    "PAC": "Pan Africanist Congress of Azania",
+    "PAM": "Pan Africanist Movement",
+    "PA": "Patriotic Alliance",
+    "PAL": "Peoples Alliance",
+    "UBUNTU": "Ubuntu Party",
+    "UCDP": "United Christian Democratic Party",
+    "UNICO": "United Congress",
+    "UDM": "United Democratic Movement",
+    "VF+": "Vryheidsfront Plus",
+    "WASP": "Workers and Socialist Party",
+};
 
 var afmt1 = d3.format(",.0f");
 var afmt2 = d3.format(",.1f");
@@ -75,13 +102,13 @@ L.control.layers({
     "Photo" : aerial
 }).addTo(map);
 
-/*
-parties = ['ACDP','ANC','APC','AJ','AFD','AP','AZAPO','CDA','COPE','DA','GKSA','ID','IFP','KISS','MF','MDP','NADECO','NVP','PAC','PAM','SADECO','UCDP','UDM','UIF','VF+','WF'];
+parties = ['ACDP','AIC','ANC','APC','AGANG','AJ','AZAPO','BRA','COPE','DA','EFF','FINLA','FN','ICOSA','IFP','KISS','KGM','MF','NFP','PAC','PAM','PA','PAL','UBUNTU','UCDP','UNICO','UDM','VF+','WASP'];
 
 colours = {};
-colours[1] = ['rgb(199,233,192)','rgb(161,217,155)','rgb(116,196,118)','rgb(65,171,93)','rgb(35,139,69)','rgb(0,90,50)']; //ANC
+colours[2] = ['rgb(199,233,192)','rgb(161,217,155)','rgb(116,196,118)','rgb(65,171,93)','rgb(35,139,69)','rgb(0,90,50)']; //ANC
 colours[9] = ['rgb(198,219,239)','rgb(158,202,225)','rgb(107,174,214)','rgb(66,146,198)','rgb(33,113,181)','rgb(8,69,148)']; //DA
-colours[12] = ['rgb(252,187,161)','rgb(252,146,114)','rgb(251,106,74)','rgb(239,59,44)','rgb(203,24,29)','rgb(153,0,13)']; //IFP
+colours[14] = ['rgb(252,187,161)','rgb(252,146,114)','rgb(251,106,74)','rgb(239,59,44)','rgb(203,24,29)','rgb(153,0,13)']; //IFP
+colours[18] = ['rgb(253,208,162)','rgb(253,174,107)','rgb(253,141,60)','rgb(241,105,19)','rgb(217,72,1)','rgb(140,45,4)']; //NFP
 colours[99] = ['rgb(217,217,217)','rgb(189,189,189)','rgb(150,150,150)','rgb(115,115,115)','rgb(82,82,82)','rgb(37,37,37)']; // Others
 
 function partycol(vstr) {
@@ -97,7 +124,6 @@ function partycol(vstr) {
     var propn = vmax/sum;
     return colours[widx in colours ? widx : 99][propn <= 0.5 ? 0 : Math.ceil(propn*10)-5];
 }
-*/
 
 function style(feature) {
     var d = {
@@ -105,12 +131,8 @@ function style(feature) {
         opacity: 1,
         lineJoin: "round",
         fill: true,
-        /*
         fillColor: partycol(feature.properties.v),
         fillOpacity: 0.5
-        */
-        fillColor: "white",
-        fillOpacity: 0
     };
     var c = feature.properties.c;
     if (c == selcode) {
@@ -147,17 +169,14 @@ var oef = function (feature, layer) {
         layer.bringToFront();
         levels[curLevel].geojsonLayer.setStyle(style);
         $("#placename").text(p.n);
-        /*
         do_table(feature);
         $("#vvalid").text(afmt1(p.sum));
         $("#vspoilt").text(afmt1(p.s));
         $("#vtotal").text(afmt1(p.sum + p.s));
-        */
         $("#placeinfo").css("display", "block");
     });
 }
 
-/*
 function do_table(feature)
 {
     var p = feature.properties;
@@ -184,7 +203,6 @@ function do_table(feature)
     sel.exit().remove();
     sel.sort(function(a, b) { return d3.descending(a[1], b[1]); });
 }
-*/
 
 function clearsel() {
     sellayer = null;
