@@ -22,6 +22,7 @@ table.voteinfo tr td:first-child { padding-left: 0; }
 abbr { border-bottom: 1px dotted; }
 
 #legend table { font-size: 80%; width: 100%; }
+#legend table td.leghead { text-align: center; }
 #legend table td.legcel { padding-left: 5px; }
 
 .leaflet-control-permalink { display: none; }
