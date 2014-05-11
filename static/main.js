@@ -348,32 +348,33 @@ var balpar = getHashParam('ballot');
 setBallot((balpar && (balpar == 'nat' || balpar == 'prov')) ? balpar : 'nat');
 
 var curLevel;
-function switchLevel() {
+function switchLevel(dont_clear) {
     var newLevel = $('input[name="level"]:checked').val();
 
     if (newLevel != curLevel) {
         if (levels[curLevel]) map.removeLayer(levels[curLevel]);
         map.addLayer(levels[newLevel]);
-        clearsel();
+        if(!dont_clear) clearsel();
         setHashParam('level', newLevel);
         curLevel = newLevel;
     }
 }
 
-function setLevel(name) {
+function setLevel(name, dont_clear) {
     $('input[name="level"][value="' + name + '"]')[0].checked = true;
-    switchLevel();
+    switchLevel(dont_clear);
 }
 
 var selpar = getHashParam('sel');
 
 var levpar = getHashParam('level');
-setLevel((levpar && levpar in levels) ? levpar : 'muni');
+setLevel((levpar && levpar in levels) ? levpar : 'muni', true);
 
 if (selpar) {
+    selcode = selpar;
     levels[curLevel].once('load', function() {
         levels[curLevel].geojsonLayer.eachLayer(function(layer) {
-            if (layer.feature.properties.c == selpar)
+            if (layer.feature.properties.c == selcode)
             {
                 layer.fireEvent('click');
             }
