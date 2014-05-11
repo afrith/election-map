@@ -241,9 +241,6 @@ function do_table(feature)
     var sel = d3.select("table.voteinfo tbody").selectAll("tr")
         .data(pvotes, function(d) { return d[0]; });
     var aptr = sel.enter().append("tr");
-    /*aptr.append("td").append("abbr")
-        .attr("title", function(d) { return partynames[d[0]]; })
-        .text(function(d) { return d[0]; });*/
     aptr.append("td").text(function (d) { return partynames[d[0]]; });
     aptr.append("td").attr("class", "vnum");
     aptr.append("td").attr("class", "vperc");
