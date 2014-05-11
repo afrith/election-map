@@ -1,5 +1,5 @@
-$('#placeinfo').css('top', ($('#details').height() + 10) + 'px');
-$('#placeinfo').css('bottom', ($('#legend').height() + 10) + 'px');
+$('#placeinfo').css('top', ($('#details').height() + 5) + 'px');
+$('#placeinfo').css('bottom', ($('#legend').height()) + 'px');
 
 var tileroot = "http://localhost:8080/";
 
