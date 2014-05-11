@@ -27,4 +27,6 @@ abbr { border-bottom: 1px dotted; }
 #legend table td.leghead { text-align: center; }
 #legend table td.legcel { padding-left: 5px; }
 
+input#searchbox { width: 220px; }
+
 .leaflet-control-permalink { display: none; }

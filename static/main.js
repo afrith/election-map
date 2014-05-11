@@ -380,3 +380,23 @@ if (selpar) {
 }
 
 map.fire('zoomend');
+
+function do_search() {
+    var searchstr = $('#searchbox').val().trim();
+    if (searchstr.length == 0)
+        return;
+
+    var bds = map.getBounds();
+
+    $.getJSON('http://nominatim.openstreetmap.org/search?' +
+        'format=json&countrycodes=ZA&accept-language=en' +
+        'viewbox=' + bds.getWest() + ',' + bds.getNorth() +
+        ',' + bds.getEast() + ',' + bds.getSouth() +
+        '&q=' + encodeURIComponent(searchstr),
+        success = function (data) {
+            if (data.length == 0)
+                return;
+            var bb = data[0].boundingbox;
+            map.fitBounds([[bb[0], bb[2]], [bb[1], bb[3]]]);
+        });
+}
