@@ -7,6 +7,7 @@ var partynames = {
     "ACDP": "African Christian Democratic Party",
     "AIC": "African Independent Congress",
     "ANC": "African National Congress",
+    "ANP": "African National Party",
     "APC": "African People's Convention",
     "AGANG": "Agang South Africa",
     "AJ": "Al Jama-ah",
@@ -18,25 +19,41 @@ var partynames = {
     "FINLA": "First Nation Liberation Alliance",
     "FN": "Front National",
     "ICOSA": "Independent Civic Organisation of South Africa",
+    "IPO": "Indigenous Peoples Organisation",
     "IFP": "Inkatha Freedom Party",
     "KISS": "Keep It Straight and Simple",
     "KGM": "Kingdom Governance Movement",
+    "KZNTA": "KwaZulu-Natal Transport Alliance",
+    "LDA": "Lekgotla for Democracy Advancement",
+    "MECA": "Merafong Civic Association",
     "MF": "Minority Front",
     "NFP": "National Freedom Party",
+    "NPSA": "National Party South Africa",
     "PAC": "Pan Africanist Congress of Azania",
     "PAM": "Pan Africanist Movement",
     "PA": "Patriotic Alliance",
+    "PAMSA": "Patriotic Movement of South Africa",
     "PAL": "Peoples Alliance",
+    "SCA": "Sibanye Civic Association",
+    "SPP": "Sindawonye Progressive Party",
+    "SAMEBA": "South African Maintenance and Estate Beneficiaries Association",
+    "SAPP": "South African Political Party",
+    "SAPCO": "South African Progressive Civic Organisation",
+    "TA": "Truly Alliance",
+    "ULS": "Ubumbano Lwesizwe Sabangoni",
     "UBUNTU": "Ubuntu Party",
+    "UMSA": "Unemployment Movement SA",
     "UCDP": "United Christian Democratic Party",
     "UNICO": "United Congress",
     "UDM": "United Democratic Movement",
     "VF+": "Vryheidsfront Plus",
     "WASP": "Workers and Socialist Party",
+    "XP": "Ximoko Party",
 };
 
 var afmt1 = d3.format(",.0f");
 var afmt2 = d3.format(",.1f");
+var afmt3 = d3.format(",.2f");
 
 function setHashParam(key, val) {
     var re = new RegExp('^' + key + '=');
@@ -102,28 +119,53 @@ L.control.layers({
     "Photo" : aerial
 }).addTo(map);
 
-parties = ['ACDP','AIC','ANC','APC','AGANG','AJ','AZAPO','BRA','COPE','DA','EFF','FINLA','FN','ICOSA','IFP','KISS','KGM','MF','NFP','PAC','PAM','PA','PAL','UBUNTU','UCDP','UNICO','UDM','VF+','WASP'];
+natparties = ['ACDP','AIC','ANC','APC','AGANG','AJ','AZAPO','BRA','COPE','DA','EFF','FINLA','FN','ICOSA','IFP','KISS','KGM','MF','NFP','PAC','PAM','PA','PAL','UBUNTU','UCDP','UNICO','UDM','VF+','WASP'];
 
-colours = {};
-colours[2] = ['rgb(199,233,192)','rgb(161,217,155)','rgb(116,196,118)','rgb(65,171,93)','rgb(35,139,69)','rgb(0,90,50)']; //ANC
-colours[9] = ['rgb(198,219,239)','rgb(158,202,225)','rgb(107,174,214)','rgb(66,146,198)','rgb(33,113,181)','rgb(8,69,148)']; //DA
-colours[10] = ['rgb(218,218,235)','rgb(188,189,220)','rgb(158,154,200)','rgb(128,125,186)','rgb(106,81,163)','rgb(74,20,134)']; //EFF
-colours[14] = ['rgb(252,187,161)','rgb(252,146,114)','rgb(251,106,74)','rgb(239,59,44)','rgb(203,24,29)','rgb(153,0,13)']; //IFP
-colours[18] = ['rgb(253,208,162)','rgb(253,174,107)','rgb(253,141,60)','rgb(241,105,19)','rgb(217,72,1)','rgb(140,45,4)']; //NFP
-colours[99] = ['rgb(217,217,217)','rgb(189,189,189)','rgb(150,150,150)','rgb(115,115,115)','rgb(82,82,82)','rgb(37,37,37)']; // Others
+provparties = {
+    'EC': ['ACDP','AIC','ANC','APC','AGANG','AZAPO','COPE','DA','EFF','IFP','KGM','NFP','PAC','PAMSA','UCDP','UNICO','UDM','VF+'],
+    'FS': ['ACDP','ANC','APC','AGANG','AZAPO','COPE','DA','EFF','ICOSA','IFP','NFP','PAC','PA','UCDP','UDM','VF+'],
+    'GT': ['ACDP','ANC','APC','AGANG','AZAPO','COPE','DA','EFF','FN','ICOSA','IFP','KGM','LDA','MECA','MF','NFP','PAC','PA','UCDP','UDM','VF+','WASP'],
+    'KZN': ['ACDP','ANC','APC','AZAPO','COPE','DA','EFF','IFP','KGM','KZNTA','MF','NFP','PAC','TA','ULS','UCDP','UDM','VF+'],
+    'LIM': ['ACDP','ANC','APC','AGANG','AZAPO','COPE','DA','EFF','IFP','LDA','MECA','NFP','PAC','SAMEBA','UMSA','UCDP','UDM','VF+','WASP','XP'],
+    'MP': ['ACDP','ANC','APC','AGANG','AZAPO','BRA','COPE','DA','EFF','IFP','NFP','PAC','SPP','UCDP','UDM','VF+'],
+    'NC': ['ACDP','ANC','APC','AZAPO','COPE','DA','EFF','FINLA','ICOSA','IFP','NFP','PAC','PA','UCDP','UDM','VF+'],
+    'NW': ['ACDP','ANC','APC','AGANG','AZAPO','COPE','DA','EFF','IFP','NFP','PAC','SAPP','UCDP','UDM','VF+','WASP'],
+    'WC': ['ACDP','AIC','ANC','ANP','APC','AGANG','AJ','AZAPO','COPE','DA','EFF','FINLA','ICOSA','IPO','IFP','KGM','NFP','NPSA','PAC','PA','PAL','SCA','SAPCO','UCDP','UDM','VF+'],
+};
 
-function partycol(vstr) {
-    var vlist = vstr.split(',').map(function(x) { return +x; });
+colours = {
+    'ANC': ['rgb(199,233,192)','rgb(161,217,155)','rgb(116,196,118)','rgb(65,171,93)','rgb(35,139,69)','rgb(0,90,50)'],
+    'DA': ['rgb(198,219,239)','rgb(158,202,225)','rgb(107,174,214)','rgb(66,146,198)','rgb(33,113,181)','rgb(8,69,148)'],
+    'EFF': ['rgb(218,218,235)','rgb(188,189,220)','rgb(158,154,200)','rgb(128,125,186)','rgb(106,81,163)','rgb(74,20,134)'],
+    'IFP': ['rgb(252,187,161)','rgb(252,146,114)','rgb(251,106,74)','rgb(239,59,44)','rgb(203,24,29)','rgb(153,0,13)'],
+    'NFP': ['rgb(253,208,162)','rgb(253,174,107)','rgb(253,141,60)','rgb(241,105,19)','rgb(217,72,1)','rgb(140,45,4)'],
+    'oth': ['rgb(217,217,217)','rgb(189,189,189)','rgb(150,150,150)','rgb(115,115,115)','rgb(82,82,82)','rgb(37,37,37)'],
+}
+
+function partycol(p) {
+    var parties;
+    var votes;
+    if (curBallot == 'nat') {
+        parties = natparties;
+        votes = p.v;
+    } else {
+        parties = provparties[p.pc];
+        votes = p.pv;
+    }
+
+    var vlist = votes.split(',').map(function(x) { return +x; });
     sum = d3.sum(vlist);
     vmax = d3.max(vlist);
     widx = vlist.indexOf(vmax);
 
     if (sum == 0) {
-        return colours[99][0];
+        return colours['oth'][0];
     }
 
+    var pabbv = parties[widx];
+
     var propn = vmax/sum;
-    return colours[widx in colours ? widx : 99][propn <= 0.5 ? 0 : Math.ceil(propn*10)-5];
+    return colours[pabbv in colours ? pabbv : 'oth'][propn <= 0.5 ? 0 : Math.ceil(propn*10)-5];
 }
 
 function style(feature) {
@@ -132,7 +174,7 @@ function style(feature) {
         opacity: 1,
         lineJoin: "round",
         fill: true,
-        fillColor: partycol(feature.properties.v),
+        fillColor: partycol(feature.properties),
         fillOpacity: 0.5
     };
     var c = feature.properties.c;
@@ -169,11 +211,7 @@ var oef = function (feature, layer) {
         setHashParam('sel', p.c);
         layer.bringToFront();
         levels[curLevel].geojsonLayer.setStyle(style);
-        $("#placename").text(p.n);
         do_table(feature);
-        $("#vvalid").text(afmt1(p.sum));
-        $("#vspoilt").text(afmt1(p.s));
-        $("#vtotal").text(afmt1(p.sum + p.s));
         $("#placeinfo").css("display", "block");
     });
 }
@@ -182,27 +220,43 @@ function do_table(feature)
 {
     var p = feature.properties;
 
-    if (!(p.sum)) {
-        var vlist = p.v.split(',').map(function(x) { return +x; });
-        p.sum = d3.sum(vlist);
-        p.pvotes = d3.zip(parties, vlist)
-            .filter(function(d) { return d[1] > 0; });
+    $("#placename").text(p.n);
+
+    var parties, votes, spoilt;
+    if (curBallot == 'nat') {
+        parties = natparties;
+        votes = p.v;
+        spoilt = p.s;
+    } else {
+        parties = provparties[p.pc];
+        votes = p.pv;
+        spoilt = p.ps;
     }
 
+    var vlist = votes.split(',').map(function(x) { return +x; });
+    var vsum = d3.sum(vlist);
+    var pvotes = d3.zip(parties, vlist)
+        .filter(function(d) { return d[1] > 0; });
+
     var sel = d3.select("table.voteinfo tbody").selectAll("tr")
-        .data(p.pvotes, function(d) { return d[0]; });
+        .data(pvotes, function(d) { return d[0]; });
     var aptr = sel.enter().append("tr");
-    aptr.append("td").append("abbr")
+    /*aptr.append("td").append("abbr")
         .attr("title", function(d) { return partynames[d[0]]; })
-        .text(function(d) { return d[0]; });
+        .text(function(d) { return d[0]; });*/
+    aptr.append("td").text(function (d) { return partynames[d[0]]; });
     aptr.append("td").attr("class", "vnum");
     aptr.append("td").attr("class", "vperc");
     sel.select("td.vnum")
         .text(function(d) { return afmt1(d[1]); });
     sel.select("td.vperc")
-        .text(function(d) { return afmt2(d[1]*100/p.sum); });
+        .text(function(d) { return afmt3(d[1]*100/vsum); });
     sel.exit().remove();
     sel.sort(function(a, b) { return d3.descending(a[1], b[1]); });
+
+    $("#vvalid").text(afmt1(vsum));
+    $("#vspoilt").text(afmt1(spoilt));
+    $("#vtotal").text(afmt1(vsum + spoilt));
 }
 
 function clearsel() {
@@ -278,9 +332,10 @@ function switchBallot() {
     var newBallot = $('input[name="ballot"]:checked').val();
 
     if (newBallot != curBallot) {
-        //TODO: code to change styles and tables goes here
         setHashParam('ballot', newBallot);
         curBallot = newBallot;
+        if(levels[curLevel]) levels[curLevel].geojsonLayer.setStyle(style);
+        if(sellayer) do_table(sellayer.feature);
     }
 }
 
