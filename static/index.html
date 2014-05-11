@@ -26,17 +26,18 @@
 <div id="details">
 
 <div id="search">
-<b>Search:</b> <input type="text" id="searchbox" onkeydown="if (event.keyCode == 13) do_search()"/>
+<span class="caption">Search:</span>&nbsp;
+<input type="text" id="searchbox" onkeydown="if (event.keyCode == 13) do_search()"/>
 </div>
 <hr />
 <div id="ballots">
-<b>Ballot:</b>&nbsp;
+<span class="caption">Ballot:</span>&nbsp;
 <input type="radio" name="ballot" value="nat" onchange="switchBallot()">National</input>&nbsp;
 <input type="radio" name="ballot" value="prov" onchange="switchBallot()">Provincial</input>
 </div>
 
 <div id="levels">
-<b>Level of detail:</b><br />
+<span class="caption">Level of detail:</span><br />
 <input type="radio" name="level" value="prov" onchange="switchLevel()">Provinces</input>&nbsp;
 <input type="radio" name="level" value="dist" onchange="switchLevel()">District municipalities</input><br />
 <input type="radio" name="level" value="muni" onchange="switchLevel()">Local municipalities</input>&nbsp;

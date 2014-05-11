@@ -8,6 +8,7 @@ html, body, { margin: 0; padding: 0; width: 100%; height: 100%; }
 #placeinfo { position: absolute; width: 100%; top: 200px; bottom: 150px; overflow-y: auto; }
 #legend { position: absolute; width: 100%; bottom: 0; }
 
+span.caption { font-weight: bold; }
 #ballots,#levels { padding-top:5px; padding-bottom: 5px; }
 .hint { font-style: italic; font-size: 85%; }
 #placename { font-size: 125%; font-weight: bold; text-transform: uppercase; }
