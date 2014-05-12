@@ -1,7 +1,7 @@
 election-map
 ============
 
-This is a web app that displays an interactive 'slippy' map of South African election results. It uses [TileStache](http://tilestache.org/) to serve vector geography tiles (representing municipalities, wards, etc.) and [Leaflet](http://leafletjs.com/) plus Glenn Robertson's [GeoJSON Tile Layer](https://github.com/glenrobertson/leaflet-tilelayer-geojson) to display the map.
+This is a web app that displays an interactive 'slippy' map of South African election results. It uses a slightly modified version of [TileStache](http://tilestache.org/) to serve vector geography tiles (representing municipalities, wards, etc.); [see this commit for the necessary modification](https://github.com/afrith/TileStache/commit/5ddd229c3c8d6fe783a758edfe6b5b89be4a78ff). The front-end uses [Leaflet](http://leafletjs.com/) plus Glenn Robertson's [GeoJSON Tile Layer](https://github.com/glenrobertson/leaflet-tilelayer-geojson) to display the map.
 
 2014 version and data
 ---------------------
