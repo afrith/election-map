@@ -1,4 +1,3 @@
-
 var tileroot = "http://localhost:8080/";
 
 var partynames = {
@@ -47,6 +46,20 @@ var partynames = {
     "VF+": "Vryheidsfront Plus",
     "WASP": "Workers and Socialist Party",
     "XP": "Ximoko Party",
+};
+
+natparties = ['ACDP','AIC','ANC','APC','AGANG','AJ','AZAPO','BRA','COPE','DA','EFF','FINLA','FN','ICOSA','IFP','KISS','KGM','MF','NFP','PAC','PAM','PA','PAL','UBUNTU','UCDP','UNICO','UDM','VF+','WASP'];
+
+provparties = {
+    'EC': ['ACDP','AIC','ANC','APC','AGANG','AZAPO','COPE','DA','EFF','IFP','KGM','NFP','PAC','PAMSA','UCDP','UNICO','UDM','VF+'],
+    'FS': ['ACDP','ANC','APC','AGANG','AZAPO','COPE','DA','EFF','ICOSA','IFP','NFP','PAC','PA','UCDP','UDM','VF+'],
+    'GT': ['ACDP','ANC','APC','AGANG','AZAPO','COPE','DA','EFF','FN','ICOSA','IFP','KGM','LDA','MECA','MF','NFP','PAC','PA','UCDP','UDM','VF+','WASP'],
+    'KZN': ['ACDP','ANC','APC','AZAPO','COPE','DA','EFF','IFP','KGM','KZNTA','MF','NFP','PAC','TA','ULS','UCDP','UDM','VF+'],
+    'LIM': ['ACDP','ANC','APC','AGANG','AZAPO','COPE','DA','EFF','IFP','LDA','MECA','NFP','PAC','SAMEBA','UMSA','UCDP','UDM','VF+','WASP','XP'],
+    'MP': ['ACDP','ANC','APC','AGANG','AZAPO','BRA','COPE','DA','EFF','IFP','NFP','PAC','SPP','UCDP','UDM','VF+'],
+    'NC': ['ACDP','ANC','APC','AZAPO','COPE','DA','EFF','FINLA','ICOSA','IFP','NFP','PAC','PA','UCDP','UDM','VF+'],
+    'NW': ['ACDP','ANC','APC','AGANG','AZAPO','COPE','DA','EFF','IFP','NFP','PAC','SAPP','UCDP','UDM','VF+','WASP'],
+    'WC': ['ACDP','AIC','ANC','ANP','APC','AGANG','AJ','AZAPO','COPE','DA','EFF','FINLA','ICOSA','IPO','IFP','KGM','NFP','NPSA','PAC','PA','PAL','SCA','SAPCO','UCDP','UDM','VF+'],
 };
 
 var afmt1 = d3.format(",.0f");
@@ -117,19 +130,6 @@ L.control.layers({
     "Photo" : aerial
 }).addTo(map);
 
-natparties = ['ACDP','AIC','ANC','APC','AGANG','AJ','AZAPO','BRA','COPE','DA','EFF','FINLA','FN','ICOSA','IFP','KISS','KGM','MF','NFP','PAC','PAM','PA','PAL','UBUNTU','UCDP','UNICO','UDM','VF+','WASP'];
-
-provparties = {
-    'EC': ['ACDP','AIC','ANC','APC','AGANG','AZAPO','COPE','DA','EFF','IFP','KGM','NFP','PAC','PAMSA','UCDP','UNICO','UDM','VF+'],
-    'FS': ['ACDP','ANC','APC','AGANG','AZAPO','COPE','DA','EFF','ICOSA','IFP','NFP','PAC','PA','UCDP','UDM','VF+'],
-    'GT': ['ACDP','ANC','APC','AGANG','AZAPO','COPE','DA','EFF','FN','ICOSA','IFP','KGM','LDA','MECA','MF','NFP','PAC','PA','UCDP','UDM','VF+','WASP'],
-    'KZN': ['ACDP','ANC','APC','AZAPO','COPE','DA','EFF','IFP','KGM','KZNTA','MF','NFP','PAC','TA','ULS','UCDP','UDM','VF+'],
-    'LIM': ['ACDP','ANC','APC','AGANG','AZAPO','COPE','DA','EFF','IFP','LDA','MECA','NFP','PAC','SAMEBA','UMSA','UCDP','UDM','VF+','WASP','XP'],
-    'MP': ['ACDP','ANC','APC','AGANG','AZAPO','BRA','COPE','DA','EFF','IFP','NFP','PAC','SPP','UCDP','UDM','VF+'],
-    'NC': ['ACDP','ANC','APC','AZAPO','COPE','DA','EFF','FINLA','ICOSA','IFP','NFP','PAC','PA','UCDP','UDM','VF+'],
-    'NW': ['ACDP','ANC','APC','AGANG','AZAPO','COPE','DA','EFF','IFP','NFP','PAC','SAPP','UCDP','UDM','VF+','WASP'],
-    'WC': ['ACDP','AIC','ANC','ANP','APC','AGANG','AJ','AZAPO','COPE','DA','EFF','FINLA','ICOSA','IPO','IFP','KGM','NFP','NPSA','PAC','PA','PAL','SCA','SAPCO','UCDP','UDM','VF+'],
-};
 
 var keys, colours;
 var colourblind = getHashParam('colourblind');
@@ -155,7 +155,6 @@ function setColours() {
     }
 }
 setColours();
-
 
 function makeLegend() {
     var legbody = $('#legend table tbody');
