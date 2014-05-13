@@ -132,39 +132,70 @@ provparties = {
 };
 
 var keys, colours;
-var colorblind = getHashParam('colourblind');
-if (colorblind == 'yes') {
-    keys = ['ANC', 'DA', 'Other'];
-    colours = {
-        'ANC': ['rgb(252,187,161)','rgb(252,146,114)','rgb(251,106,74)','rgb(239,59,44)','rgb(203,24,29)','rgb(153,0,13)'],
-        'DA': ['rgb(198,219,239)','rgb(158,202,225)','rgb(107,174,214)','rgb(66,146,198)','rgb(33,113,181)','rgb(8,69,148)'],
-        'Other': ['rgb(217,217,217)','rgb(189,189,189)','rgb(150,150,150)','rgb(115,115,115)','rgb(82,82,82)','rgb(37,37,37)'],
-    };
-} else {
-    keys = ['ANC', 'DA', 'EFF', 'IFP', 'NFP', 'Other'];
-    colours = {
-        'ANC': ['rgb(199,233,192)','rgb(161,217,155)','rgb(116,196,118)','rgb(65,171,93)','rgb(35,139,69)','rgb(0,90,50)'],
-        'DA': ['rgb(198,219,239)','rgb(158,202,225)','rgb(107,174,214)','rgb(66,146,198)','rgb(33,113,181)','rgb(8,69,148)'],
-        'EFF': ['rgb(218,218,235)','rgb(188,189,220)','rgb(158,154,200)','rgb(128,125,186)','rgb(106,81,163)','rgb(74,20,134)'],
-        'IFP': ['rgb(252,187,161)','rgb(252,146,114)','rgb(251,106,74)','rgb(239,59,44)','rgb(203,24,29)','rgb(153,0,13)'],
-        'NFP': ['rgb(253,208,162)','rgb(253,174,107)','rgb(253,141,60)','rgb(241,105,19)','rgb(217,72,1)','rgb(140,45,4)'],
-        'Other': ['rgb(217,217,217)','rgb(189,189,189)','rgb(150,150,150)','rgb(115,115,115)','rgb(82,82,82)','rgb(37,37,37)'],
-    };
-}
+var colourblind = getHashParam('colourblind');
 
-var legbody = $('#legend table tbody');
-for (var i = 0, l = keys.length; i < l; i++) {
-    var k = keys[i];
-    var row = $('<tr>');
-    if (k == 'Other') {
-        row.append($('<td>').text(k));
+function setColours() {
+    if (colourblind == 'yes') {
+        keys = ['ANC', 'DA', 'Other'];
+        colours = {
+            'ANC': ['rgb(252,187,161)','rgb(252,146,114)','rgb(251,106,74)','rgb(239,59,44)','rgb(203,24,29)','rgb(153,0,13)'],
+            'DA': ['rgb(198,219,239)','rgb(158,202,225)','rgb(107,174,214)','rgb(66,146,198)','rgb(33,113,181)','rgb(8,69,148)'],
+            'Other': ['rgb(217,217,217)','rgb(189,189,189)','rgb(150,150,150)','rgb(115,115,115)','rgb(82,82,82)','rgb(37,37,37)'],
+        };
     } else {
-        row.append($('<td>').append($('<abbr>').text(k).attr('title', partynames[k])));
+        keys = ['ANC', 'DA', 'EFF', 'IFP', 'NFP', 'Other'];
+        colours = {
+            'ANC': ['rgb(199,233,192)','rgb(161,217,155)','rgb(116,196,118)','rgb(65,171,93)','rgb(35,139,69)','rgb(0,90,50)'],
+            'DA': ['rgb(198,219,239)','rgb(158,202,225)','rgb(107,174,214)','rgb(66,146,198)','rgb(33,113,181)','rgb(8,69,148)'],
+            'EFF': ['rgb(218,218,235)','rgb(188,189,220)','rgb(158,154,200)','rgb(128,125,186)','rgb(106,81,163)','rgb(74,20,134)'],
+            'IFP': ['rgb(252,187,161)','rgb(252,146,114)','rgb(251,106,74)','rgb(239,59,44)','rgb(203,24,29)','rgb(153,0,13)'],
+            'NFP': ['rgb(253,208,162)','rgb(253,174,107)','rgb(253,141,60)','rgb(241,105,19)','rgb(217,72,1)','rgb(140,45,4)'],
+            'Other': ['rgb(217,217,217)','rgb(189,189,189)','rgb(150,150,150)','rgb(115,115,115)','rgb(82,82,82)','rgb(37,37,37)'],
+        };
     }
-    for (var j = 0; j < 6; j++) {
-        row.append($('<td>').attr('class', 'legcel').css('background-color', colours[k][j]).css('opacity',0.5));
+}
+setColours();
+
+
+function makeLegend() {
+    var legbody = $('#legend table tbody');
+    legbody.find('tr').remove();
+    for (var i = 0, l = keys.length; i < l; i++) {
+        var k = keys[i];
+        var row = $('<tr>');
+        if (k == 'Other') {
+            row.append($('<td>').text(k));
+        } else {
+            row.append($('<td>').append($('<abbr>').text(k).attr('title', partynames[k])));
+        }
+        for (var j = 0; j < 6; j++) {
+            row.append($('<td>').attr('class', 'legcel').css('background-color', colours[k][j]).css('opacity',0.5));
+        }
+        legbody.append(row);
     }
-    legbody.append(row);
+
+    if (colourblind == 'yes') {
+        $('a#colblind').text('Not colourblind?');
+    } else {
+        $('a#colblind').text('Colourblind?');
+    }
+
+}
+makeLegend();
+
+function flipColourBlind() {
+    if (colourblind == 'yes') {
+        clearHashParam('colourblind');
+        colourblind = null;
+    } else {
+        setHashParam('colourblind', 'yes');
+        colourblind = 'yes';
+    }
+
+    setColours();
+    makeLegend();
+    resetDivSize();
+    if(levels[curLevel]) levels[curLevel].geojsonLayer.setStyle(style);
 }
 
 function partycol(p) {
@@ -426,5 +457,8 @@ function do_search() {
         });
 }
 
-$('#placeinfo').css('top', ($('#details').height() + 5) + 'px');
-$('#placeinfo').css('bottom', ($('#legend').height()) + 'px');
+function resetDivSize() {
+    $('#placeinfo').css('top', ($('#details').height() + 5) + 'px');
+    $('#placeinfo').css('bottom', ($('#legend').height()) + 'px');
+}
+resetDivSize();

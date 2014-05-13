@@ -28,6 +28,7 @@ abbr { border-bottom: 1px dotted; }
 #legend table { font-size: 80%; width: 100%; }
 #legend table td.leghead { text-align: center; }
 #legend table td.legcel { padding-left: 5px; }
+a#colblind { font-size: 80%; }
 
 input#searchbox { width: 220px; }
 
