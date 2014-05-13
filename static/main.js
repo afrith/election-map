@@ -194,7 +194,7 @@ function flipColourBlind() {
     setColours();
     makeLegend();
     resetDivSize();
-    if(levels[curLevel]) levels[curLevel].geojsonLayer.setStyle(style);
+    resetStyle();
 }
 
 function partycol(p) {
@@ -243,6 +243,12 @@ function style(feature) {
     return d;
 }
 
+function resetStyle() {
+    if (levels[curLevel]) {
+        levels[curLevel].geojsonLayer.setStyle(style);
+    }
+}
+
 var selcode = '';
 var hovcode = '';
 var sellayer;
@@ -253,11 +259,11 @@ var oef = function (feature, layer) {
     layer.on('mouseover', function (e) {
         layer.bringToFront();
         hovcode = p.c;
-        levels[curLevel].geojsonLayer.setStyle(style);
+        resetStyle();
     });
     layer.on('mouseout', function () {
         hovcode = '';
-        levels[curLevel].geojsonLayer.setStyle(style);
+        resetStyle();
         if (sellayer) sellayer.bringToFront();
     });
     layer.on('click', function() {
@@ -265,9 +271,8 @@ var oef = function (feature, layer) {
         selcode = p.c;
         setHashParam('sel', p.c);
         layer.bringToFront();
-        levels[curLevel].geojsonLayer.setStyle(style);
+        resetStyle();
         do_table(feature);
-        $("#placeinfo").css("display", "block");
     });
 }
 
@@ -309,13 +314,14 @@ function do_table(feature)
     $("#vvalid").text(afmt1(vsum));
     $("#vspoilt").text(afmt1(spoilt));
     $("#vtotal").text(afmt1(vsum + spoilt));
+    $("#placeinfo").css("display", "block");
 }
 
 function clearsel() {
     sellayer = null;
     selcode = null;
     clearHashParam('sel');
-    if(levels[curLevel]) levels[curLevel].geojsonLayer.setStyle(style);
+    resetStyle();
     $("#placeinfo").css("display", "none");
 }
 
@@ -386,7 +392,7 @@ function switchBallot() {
     if (newBallot != curBallot) {
         setHashParam('ballot', newBallot);
         curBallot = newBallot;
-        if(levels[curLevel]) levels[curLevel].geojsonLayer.setStyle(style);
+        resetStyle();
         if(sellayer) do_table(sellayer.feature);
     }
 }
