@@ -7,6 +7,6 @@ Live version and data
 ---------------------
 
 A live version of the app with results from the 2009 and 2014 elections can be seen at http://elections.adrianfrith.com/. The PostgreSQL databases containing the data can be downloaded from the following links: [2014](http://stuff.adrianfrith.com/election2014.sql.bz2), [2009](http://stuff.adrianfrith.com/election2009.sql.bz2). Those are 700MB files each, but if you just want the underlying data you can download:
-* the election results by voting district: [2014](http://www.elections.org.za/content/Elections/Downloadable-results/2014-National-and-Provincial-Elections--Complete-results-data-(zipped-CSV\)/), [2009](http://www.elections.org.za/content/uploadedfiles/2009%20NPE.zip)
+* the election results by voting district: [2014](http://www.elections.org.za/content/Elections/Downloadable-results/2014-National-and-Provincial-Elections--Complete-results-data-(zipped-CSV)/), [2009](http://www.elections.org.za/content/uploadedfiles/2009%20NPE.zip)
 * the link between voting districts and larger areas: [2014](http://stuff.adrianfrith.com/sa-admin-data-2014.tar.bz2), [2009](http://stuff.adrianfrith.com/sa-admin-data-2009.tar.bz2)
 * the geography shapefiles: [2014](http://stuff.adrianfrith.com/sa-admin-boundaries-2014.tar.bz2), [2009](http://stuff.adrianfrith.com/sa-admin-boundaries-2009.tar.bz2)
