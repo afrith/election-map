@@ -436,6 +436,7 @@ for (var j = 0; j < years.length; j++) {
         newLayer.geojsonLayer.on('layeradd', function(e) {
             if (e.layer.feature.properties.c == selcode) {
                 sellayer = e.layer;
+                e.layer.bringToFront();
                 do_table(e.layer.feature);
             }
         });
@@ -499,6 +500,7 @@ function switchYear() {
         curYear = newYear;
         setParties();
         $("#placeinfo").css("display", "none");
+        sellayer = null;
         if (layers[curLname]) map.removeLayer(layers[curLname]);
         map.addLayer(layers[newLname]);
         setHashParam('year', newYear);
