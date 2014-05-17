@@ -1,4 +1,4 @@
-var tileroot = "http://localhost:8080/";
+var tileroot = "/tiles/";
 
 var partynames = {
     "AMP": "Africa Muslim Party",
