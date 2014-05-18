@@ -304,7 +304,7 @@ function calcCachedData(p) {
             p.pvwin = parties[$.inArray(d3.max(vlist), vlist)];
             var vmap = {};
             for (var i = 0, l = parties.length; i < l; i++) {
-                vmap[parties[i]] = vlist[i];
+                if (vlist[i] > 0) vmap[parties[i]] = vlist[i];
             }
             p.pvmap = vmap;
         }
@@ -315,7 +315,7 @@ function calcCachedData(p) {
             p.nvwin = curNatParties[$.inArray(d3.max(vlist), vlist)];
             var vmap = {};
             for (var i = 0, l = curNatParties.length; i < l; i++) {
-                vmap[curNatParties[i]] = vlist[i];
+                if (vlist[i] > 0) vmap[curNatParties[i]] = vlist[i];
             }
             p.nvmap = vmap;
         }
