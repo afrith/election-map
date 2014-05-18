@@ -357,8 +357,6 @@ function style(feature) {
     var c = feature.properties.c;
     if (c == selcode) {
         d.color = "red"; d.weight = 2;
-    //} else if (c == hovcode) {
-    //    d.color = "blue"; d.weight = 2;
     } else {
         d.color = "grey"; d.weight = 1;
     }
