@@ -403,6 +403,7 @@ function clearsel() {
     clearHashParam('sel');
     resetStyle();
     $("#placeinfo").css("display", "none");
+    $(".hint").css("display", "block");
 }
 
 map.on('click', clearsel);
@@ -506,6 +507,7 @@ function do_table(feature)
     $("#vspoilt").text(afmt1(spoilt));
     $("#vtotal").text(afmt1(vsum + spoilt));
     $("#placeinfo").css("display", "block");
+    $(".hint").css("display", "none");
 }
 
 map.addLayer(layers[curLevel + curYear]);
@@ -519,6 +521,7 @@ function switchYear() {
         curYear = newYear;
         setParties();
         $("#placeinfo").css("display", "none");
+        $(".hint").css("display", "block");
         sellayer = null;
         if (layers[curLname]) map.removeLayer(layers[curLname]);
         map.addLayer(layers[newLname]);
