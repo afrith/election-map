@@ -476,36 +476,33 @@ function do_table(feature)
 {
     var p = feature.properties;
 
+    calcCachedData(p);
+
     $("#placename").text(p.n);
 
-    var parties, votes, spoilt;
-    if (curBallot == 'nat') {
-        parties = natparties[curYear];
-        votes = p.v;
-        spoilt = p.s;
-    } else {
-        parties = provparties[curYear][p.pc];
-        votes = p.pv;
+    var vmap, vsum, vspoilt;
+    if (curBallot == 'prov') {
+        vmap = p.pvmap;
+        vsum = p.pvsum
         spoilt = p.ps;
+    } else {
+        vmap = p.nvmap;
+        vsum = p.nvsum;
+        spoilt = p.s;
     }
 
-    var vlist = votes.split(',').map(function(x) { return +x; });
-    var vsum = d3.sum(vlist);
-    var pvotes = d3.zip(parties, vlist)
-        .filter(function(d) { return d[1] > 0; });
-
     var sel = d3.select("table.voteinfo tbody").selectAll("tr")
-        .data(pvotes, function(d) { return d[0]; });
+        .data(d3.entries(vmap), function(d) { return d.key; });
     var aptr = sel.enter().append("tr");
-    aptr.append("td").text(function (d) { return partynames[d[0]]; });
+    aptr.append("td").text(function (d) { return partynames[d.key]; });
     aptr.append("td").attr("class", "vnum");
     aptr.append("td").attr("class", "vperc");
     sel.select("td.vnum")
-        .text(function(d) { return afmt1(d[1]); });
+        .text(function(d) { return afmt1(d.value); });
     sel.select("td.vperc")
-        .text(function(d) { return afmt3(d[1]*100/vsum); });
+        .text(function(d) { return afmt3(d.value*100/vsum); });
     sel.exit().remove();
-    sel.sort(function(a, b) { return d3.descending(a[1], b[1]); });
+    sel.sort(function(a, b) { return d3.descending(a.value, b.value); });
 
     $("#vvalid").text(afmt1(vsum));
     $("#vspoilt").text(afmt1(spoilt));
