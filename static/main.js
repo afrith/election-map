@@ -295,30 +295,54 @@ function setParties() {
 }
 setParties();
 
-function partycol(p) {
-    var parties;
-    var votes;
-    if (curBallot == 'nat') {
-        parties = curNatParties;
-        votes = p.v;
+function calcCachedData(p) {
+    if (curBallot == 'prov') {
+        if (!(p.pvmap)) {
+            var vlist = p.pv.split(',').map(function(x) { return +x; });
+            var parties = curProvParties[p.pc];
+            p.pvsum = d3.sum(vlist);
+            p.pvwin = parties[$.inArray(d3.max(vlist), vlist)];
+            var vmap = {};
+            for (var i = 0, l = parties.length; i < l; i++) {
+                vmap[parties[i]] = vlist[i];
+            }
+            p.pvmap = vmap;
+        }
     } else {
-        parties = curProvParties[p.pc];
-        votes = p.pv;
+        if (!(p.nvmap)) {
+            var vlist = p.v.split(',').map(function(x) { return +x; });
+            p.nvsum = d3.sum(vlist);
+            p.nvwin = curNatParties[$.inArray(d3.max(vlist), vlist)];
+            var vmap = {};
+            for (var i = 0, l = curNatParties.length; i < l; i++) {
+                vmap[curNatParties[i]] = vlist[i];
+            }
+            p.nvmap = vmap;
+        }
+    }
+}
+
+function partycol(p) {
+
+    calcCachedData(p);
+
+    var vsum, vmap, vwin;
+    if (curBallot == 'prov') {
+        vsum = p.pvsum;
+        vmap = p.pvmap;
+        vwin = p.pvwin;
+    } else {
+        vsum = p.nvsum;
+        vmap = p.nvmap;
+        vwin = p.nvwin;
     }
 
-    var vlist = votes.split(',').map(function(x) { return +x; });
-    sum = d3.sum(vlist);
-    vmax = d3.max(vlist);
-    widx = vlist.indexOf(vmax);
-
-    if (sum == 0) {
+    if (vsum == 0) {
         return colours['Other'][0];
     }
 
-    var pabbv = parties[widx];
-
-    var propn = vmax/sum;
-    return colours[($.inArray(pabbv, keys) == -1) ? 'Other' : pabbv][propn <= 0.5 ? 0 : Math.ceil(propn*10)-5];
+    var propn = vmap[vwin]/vsum;
+    return colours[($.inArray(vwin, keys) == -1) ? 'Other' : vwin][propn <= 0.5 ? 0 : Math.ceil(propn*10)-5];
 }
 
 function style(feature) {
