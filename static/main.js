@@ -322,7 +322,7 @@ function calcCachedData(p) {
     }
 }
 
-function partycol(p) {
+function colfun_winner(p) {
 
     calcCachedData(p);
 
@@ -345,13 +345,16 @@ function partycol(p) {
     return colours[($.inArray(vwin, keys) == -1) ? 'Other' : vwin][propn <= 0.5 ? 0 : Math.ceil(propn*10)-5];
 }
 
+var colfun;
+colfun = colfun_winner;
+
 function style(feature) {
     var d = {
         stroke: true,
         opacity: 1,
         lineJoin: "round",
         fill: true,
-        fillColor: partycol(feature.properties),
+        fillColor: colfun(feature.properties),
         fillOpacity: 0.5
     };
     var c = feature.properties.c;
