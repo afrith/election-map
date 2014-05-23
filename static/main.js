@@ -256,6 +256,15 @@ function setColours() {
 }
 setColours();
 
+var heatColours = {
+    'ANC': ['rgb(247,252,245)','rgb(229,245,224)','rgb(199,233,192)','rgb(161,217,155)','rgb(116,196,118)','rgb(65,171,93)','rgb(35,139,69)','rgb(0,90,50)'],
+    'DA': ['rgb(247,251,255)','rgb(222,235,247)','rgb(198,219,239)','rgb(158,202,225)','rgb(107,174,214)','rgb(66,146,198)','rgb(33,113,181)','rgb(8,69,148)'],
+    'COPE': ['rgb(255,245,235)','rgb(254,230,206)','rgb(253,208,162)','rgb(253,174,107)','rgb(253,141,60)','rgb(241,105,19)','rgb(217,72,1)','rgb(140,45,4)'],
+    'EFF': ['rgb(255,245,240)','rgb(254,224,210)','rgb(252,187,161)','rgb(252,146,114)','rgb(251,106,74)','rgb(239,59,44)','rgb(203,24,29)','rgb(153,0,13)'],
+};
+heatColours['IFP'] = heatColours['EFF'];
+heatColours['NFP'] = heatColours['COPE'];
+
 function makeLegend() {
     var legbody = $('#legend table tbody');
     legbody.find('tr').remove();
@@ -343,6 +352,28 @@ function colfun_winner(p) {
 
     var propn = vmap[vwin]/vsum;
     return colours[($.inArray(vwin, keys) == -1) ? 'Other' : vwin][propn <= 0.5 ? 0 : Math.ceil(propn*10)-5];
+}
+
+function colfun_heat(abbrev) {
+    return function(p) {
+        calcCachedData(p);
+
+        var vsum, vmap;
+        if (curBallot == 'prov') {
+            vsum = p.pvsum;
+            vmap = p.pvmap;
+        } else {
+            vsum = p.nvsum;
+            vmap = p.nvmap;
+        }
+
+        if (vsum == 0) {
+            return 'rgb(150,150,150)';
+        }
+
+        var propn = (vmap[abbrev] || 0)/vsum;
+        return heatColours[abbrev][propn == 1 ? 7 : Math.floor(propn * 8)];
+    };
 }
 
 var colfun;
