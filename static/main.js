@@ -128,6 +128,8 @@ var provparties = {
 
 var levels = ['prov', 'dist', 'muni', 'ward', 'vd'];
 
+var heatParties = ['ANC', 'DA', 'COPE', 'EFF', 'IFP', 'NFP'];
+
 var afmt1 = d3.format(",.0f");
 var afmt2 = d3.format(",.1f");
 var afmt3 = d3.format(",.2f");
@@ -171,7 +173,7 @@ function getHashParam(key) {
     return null;
 }
 
-var curYear, curBallot, curLevel, colourblind;
+var curYear, curBallot, curLevel, colourblind, curScheme;
 
 curYear = getHashParam('year');
 if ($.inArray(curYear, years) == -1) {
@@ -193,6 +195,13 @@ if ($.inArray(curLevel, levels) == -1) {
     setHashParam('level', curLevel);
 }
 $('input[name="level"][value="' + curLevel + '"]')[0].checked = true;
+
+curScheme = getHashParam('colours');
+if (curScheme !== 'winner' && $.inArray(curScheme, heatParties) == -1) {
+    curScheme = 'winner';
+    setHashParam('colours', curScheme);
+}
+$('select#colscheme')[0].value = curScheme;
 
 colourblind = (getHashParam('colourblind')) ? true : false;
 $('a#colblind').text(colourblind ? 'Not colourblind?' : 'Colourblind?');
@@ -256,37 +265,62 @@ function setColours() {
 }
 setColours();
 
-function makeLegend() {
-    var legbody = $('#legend table tbody');
-    legbody.find('tr').remove();
-    for (var i = 0, l = keys.length; i < l; i++) {
-        var k = keys[i];
-        var row = $('<tr>');
-        if (k == 'Other') {
-            row.append($('<td>').text(k));
-        } else {
-            row.append($('<td>').append($('<abbr>').text(k).attr('title', partynames[k])));
-        }
-        for (var j = 0; j < 6; j++) {
-            row.append($('<td>').attr('class', 'legcel').css('background-color', colours[k][j]).css('opacity',0.5));
-        }
-        legbody.append(row);
-    }
-
-    if (colourblind) {
-        $('a#colblind').text('Not colourblind?');
-    } else {
-        $('a#colblind').text('Colourblind?');
-    }
-
-}
-makeLegend();
+var heatColours = {
+    'ANC': ['rgb(247,252,245)','rgb(229,245,224)','rgb(199,233,192)','rgb(161,217,155)','rgb(116,196,118)','rgb(65,171,93)','rgb(35,139,69)','rgb(0,90,50)'],
+    'DA': ['rgb(247,251,255)','rgb(222,235,247)','rgb(198,219,239)','rgb(158,202,225)','rgb(107,174,214)','rgb(66,146,198)','rgb(33,113,181)','rgb(8,69,148)'],
+    'COPE': ['rgb(255,245,235)','rgb(254,230,206)','rgb(253,208,162)','rgb(253,174,107)','rgb(253,141,60)','rgb(241,105,19)','rgb(217,72,1)','rgb(140,45,4)'],
+    'EFF': ['rgb(255,245,240)','rgb(254,224,210)','rgb(252,187,161)','rgb(252,146,114)','rgb(251,106,74)','rgb(239,59,44)','rgb(203,24,29)','rgb(153,0,13)'],
+};
+heatColours['IFP'] = heatColours['EFF'];
+heatColours['NFP'] = heatColours['COPE'];
 
 function resetDivSize() {
     $('#placeinfo').css('top', ($('#details').height() + 5) + 'px');
     $('#placeinfo').css('bottom', ($('#legend').height()) + 'px');
 }
-resetDivSize();
+
+function makeLegend() {
+    if (curScheme == 'winner') {
+        $('#winner-legend').css('display', 'block');
+        $('#heat-legend').css('display', 'none');
+        var legbody = $('#winner-legend table tbody');
+        legbody.find('tr').remove();
+        for (var i = 0, l = keys.length; i < l; i++) {
+            var k = keys[i];
+            var row = $('<tr>');
+            if (k == 'Other') {
+                row.append($('<td>').text(k));
+            } else {
+                row.append($('<td>').append($('<abbr>').text(k).attr('title', partynames[k])));
+            }
+            for (var j = 0; j < 6; j++) {
+                row.append($('<td>').attr('class', 'legcel').css('background-color', colours[k][j]).css('opacity',0.5));
+            }
+            legbody.append(row);
+        }
+
+        $('a#colblind').css('display', 'inline');
+        if (colourblind) {
+            $('a#colblind').text('Not colourblind?');
+        } else {
+            $('a#colblind').text('Colourblind?');
+        }
+    }
+    else
+    {
+        $('#winner-legend').css('display', 'none');
+        $('#heat-legend').css('display', 'block');
+        $('a#colblind').css('display', 'none');
+
+        var collist = heatColours[curScheme];
+        $('#heat-legend td.legcel').each(function(i) {
+            this.style.backgroundColor = collist[i].replace('rgb(', 'rgba(').replace(')', ',0.5)');
+        });
+    }
+
+    resetDivSize();
+}
+makeLegend();
 
 var curNatParties, curProvParties;
 function setParties() {
@@ -322,7 +356,7 @@ function calcCachedData(p) {
     }
 }
 
-function partycol(p) {
+function colfun_winner(p) {
 
     calcCachedData(p);
 
@@ -345,13 +379,45 @@ function partycol(p) {
     return colours[($.inArray(vwin, keys) == -1) ? 'Other' : vwin][propn <= 0.5 ? 0 : Math.ceil(propn*10)-5];
 }
 
+function colfun_heat(abbrev) {
+    return function(p) {
+        calcCachedData(p);
+
+        var vsum, vmap;
+        if (curBallot == 'prov') {
+            vsum = p.pvsum;
+            vmap = p.pvmap;
+        } else {
+            vsum = p.nvsum;
+            vmap = p.nvmap;
+        }
+
+        if (vsum == 0) {
+            return 'rgb(150,150,150)';
+        }
+
+        var propn = (vmap[abbrev] || 0)/vsum;
+        return heatColours[abbrev][propn == 1 ? 7 : Math.floor(propn * 8)];
+    };
+}
+
+var colfun;
+function chooseColfun() {
+    if (curScheme == 'winner') {
+        colfun = colfun_winner;
+    } else {
+        colfun = colfun_heat(curScheme);
+    }
+}
+chooseColfun();
+
 function style(feature) {
     var d = {
         stroke: true,
         opacity: 1,
         lineJoin: "round",
         fill: true,
-        fillColor: partycol(feature.properties),
+        fillColor: colfun(feature.properties),
         fillOpacity: 0.5
     };
     var c = feature.properties.c;
@@ -528,7 +594,6 @@ function switchYear() {
         setHashParam('year', newYear);
         setColours();
         makeLegend();
-        resetDivSize();
         resetStyle();
     }
 }
@@ -541,6 +606,18 @@ function switchBallot() {
         curBallot = newBallot;
         resetStyle();
         if(sellayer) do_table(sellayer.feature);
+    }
+}
+
+function switchScheme() {
+    var newScheme = $('select#colscheme').val();
+
+    if (newScheme !== curScheme) {
+        setHashParam('colours', newScheme);
+        curScheme = newScheme;
+        chooseColfun();
+        makeLegend();
+        resetStyle();
     }
 }
 
@@ -588,7 +665,6 @@ function flipColourBlind() {
     }
     setColours();
     makeLegend();
-    resetDivSize();
     resetStyle();
 }
 

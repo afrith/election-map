@@ -76,6 +76,18 @@
 
 <div id="legend">
 <hr />
+<span class="caption">Colour scheme:</span>&nbsp;
+<select id="colscheme" onchange="switchScheme()">
+<option value="winner">Leading party</option>
+<option value="ANC">ANC vote</option>
+<option value="DA">DA vote</option>
+<option value="COPE">COPE vote</option>
+<option value="EFF">EFF vote</option>
+<option value="IFP">IFP vote</option>
+<option value="NFP">NFP vote</option>
+</select>
+
+<div id="winner-legend">
 <table>
 <thead>
 <tr>
@@ -88,11 +100,26 @@
 <td class="leghead">&gt;90%</td>
 </tr>
 </thead>
-
-<tbody>
-</tbody>
-
+<tbody></tbody>
 </table>
+</div>
+
+<div id="heat-legend">
+<table>
+<tr>
+<td class="legcel">0&ndash;12.5%</td>
+<td class="legcel">12.5&ndash;25%</td>
+<td class="legcel">25&ndash;37.5%</td>
+<td class="legcel">37.5&ndash;50%</td>
+</tr>
+<tr>
+<td class="legcel">50&ndash;62.5%</td>
+<td class="legcel">62.5&ndash;75%</td>
+<td class="legcel">75&ndash;87.5%</td>
+<td class="legcel">87.5&ndash;100%</td>
+</tr>
+</table>
+</div>
 
 <a id="colblind" href="javascript: flipColourBlind()">Colourblind?</a>
 </div>
