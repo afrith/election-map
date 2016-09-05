@@ -197,7 +197,7 @@ if ($.inArray(curLevel, levels) == -1) {
 $('input[name="level"][value="' + curLevel + '"]')[0].checked = true;
 
 curScheme = getHashParam('colours');
-if (curScheme !== 'winner' && $.inArray(curScheme, heatParties) == -1) {
+if (curScheme !== 'winner' && curScheme !== 'blank' && $.inArray(curScheme, heatParties) == -1) {
     curScheme = 'winner';
     setHashParam('colours', curScheme);
 }
@@ -306,6 +306,10 @@ function makeLegend() {
             $('a#colblind').text('Colourblind?');
         }
     }
+    else if (curScheme == 'blank') {
+        $('#winner-legend').css('display', 'none');
+        $('#heat-legend').css('display', 'none');
+    }
     else
     {
         $('#winner-legend').css('display', 'none');
@@ -379,6 +383,10 @@ function colfun_winner(p) {
     return colours[($.inArray(vwin, keys) == -1) ? 'Other' : vwin][propn <= 0.5 ? 0 : Math.ceil(propn*10)-5];
 }
 
+function colfun_blank(p) {
+    return 'rgb(150,150,150)';
+}
+
 function colfun_heat(abbrev) {
     return function(p) {
         calcCachedData(p);
@@ -405,6 +413,8 @@ var colfun;
 function chooseColfun() {
     if (curScheme == 'winner') {
         colfun = colfun_winner;
+    } else if (curScheme == 'blank') {
+        colfun = colfun_blank;
     } else {
         colfun = colfun_heat(curScheme);
     }
@@ -418,7 +428,7 @@ function style(feature) {
         lineJoin: "round",
         fill: true,
         fillColor: colfun(feature.properties),
-        fillOpacity: 0.5
+        fillOpacity: (curScheme == 'blank' ?  0 : 0.5)
     };
     var c = feature.properties.c;
     if (c == selcode) {
